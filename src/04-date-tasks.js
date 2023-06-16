@@ -74,16 +74,9 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  // const date = new Date(startDate);
-  // const diff = endDate - startDate;
-  // date.setTime(diff);
-
-  // console.debug(`${date.getHours()}
-  // :${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`);
-  // return '';
-
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const diff = (new Date(endDate - startDate)).toISOString();
+  return diff.split('T')[1].slice(0, -1);
 }
 
 
@@ -103,24 +96,26 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
-  // const offsetM = 360 / 60;
-  // const offsetH = (360 / 12) / offsetM;
+function angleBetweenClockHands(date) {
+  const NUM_MINUTES = 60;
+  const NUM_HOURS = 12;
+  const FULL_ANGLE = 360;
+  const EXPANDED_ANGLE = 180;
 
-  // const m = date.getUTCMinutes();
-  // const h = date.getUTCHours();
-  // console.debug('h==');
-  // console.debug(h);
-  // if (((h === 24) || (h === 0)) && (m === 0)) return 0;
-  // const angleM = m * offsetM;
-  // const angleH = (h * 60 + m) * offsetH;
+  const offsetH = FULL_ANGLE / (NUM_HOURS * NUM_MINUTES); // 0.5
+  const offsetM = FULL_ANGLE / NUM_MINUTES; // 6
 
-  // let angle = Math.abs(angleH - angleM);
+  const h = date.getUTCHours() % NUM_HOURS;
+  const m = date.getUTCMinutes();
 
-  // angle = angle > 180 ? 360 - angle : angle;
+  const angleH = (h * NUM_MINUTES + m) * offsetH;
+  const angleM = m * offsetM;
 
-  // return (Math.Pi * angle) / 180.0;
+  let angle = Math.abs(angleH - angleM);
+
+  angle = angle > EXPANDED_ANGLE ? FULL_ANGLE - angle : angle;
+
+  return (angle * Math.PI) / EXPANDED_ANGLE;
 }
 
 
