@@ -255,7 +255,7 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-  return num.toString().split('').reverse().join('');
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -327,8 +327,27 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str === '') return true;
+
+  const BRACKETS_LEFT = ['[', '{', '(', '<'];
+  const BRACKETS_RIGHT = [']', '}', ')', '>'];
+  const currLeftBrackets = [];
+  const currArr = str.split('');
+
+  for (let i = 0; i < currArr.length; i += 1) {
+    const element = currArr[i].toString();
+    if (BRACKETS_LEFT.includes(element)) {
+      currLeftBrackets.push(element);
+    }
+
+    if (BRACKETS_RIGHT.includes(element)) {
+      const left = currLeftBrackets.pop();
+      if (BRACKETS_LEFT.indexOf(left) !== BRACKETS_RIGHT.indexOf(element)) return false;
+    }
+  }
+
+  return (currLeftBrackets.length === 0);
 }
 
 
@@ -371,6 +390,8 @@ function toNaryString(num, n) {
  */
 function getCommonDirectoryPath(/* pathes */) {
   throw new Error('Not implemented');
+  // const pathesSplit = pathes.map((path) => path.split('/'));
+  // console.debug(pathesSplit);
 }
 
 
@@ -427,8 +448,37 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const X = 'X';
+  const O = '0';
+
+  function isWin(winner, cells) {
+    return cells[0] === winner && cells[1] === winner && cells[2] === winner;
+  }
+
+  if (isWin(X, position[0])) return X;
+  if (isWin(X, position[1])) return X;
+  if (isWin(X, position[2])) return X;
+
+  if (isWin(O, position[0])) return O;
+  if (isWin(O, position[1])) return O;
+  if (isWin(O, position[2])) return O;
+
+  if (isWin(X, [position[0][0], position[1][0], position[2][0]])) return X;
+  if (isWin(X, [position[0][1], position[1][1], position[2][1]])) return X;
+  if (isWin(X, [position[0][2], position[1][2], position[2][2]])) return X;
+
+  if (isWin(O, [position[0][0], position[1][0], position[2][0]])) return O;
+  if (isWin(O, [position[0][1], position[1][1], position[2][1]])) return O;
+  if (isWin(O, [position[0][2], position[1][2], position[2][2]])) return O;
+
+  if (isWin(X, [position[0][0], position[1][1], position[2][2]])) return X;
+  if (isWin(X, [position[2][0], position[1][1], position[0][2]])) return X;
+
+  if (isWin(O, [position[0][0], position[1][1], position[2][2]])) return O;
+  if (isWin(O, [position[2][0], position[1][1], position[0][2]])) return O;
+
+  return undefined;
 }
 
 
