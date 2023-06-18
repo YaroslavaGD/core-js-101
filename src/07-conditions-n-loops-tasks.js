@@ -279,8 +279,19 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const res = ccn.toString().split('').reverse().reduce((sum, val, i) => {
+    const currNum = Number(val);
+
+    if (i === 0) return sum + currNum;
+
+    if (i % 2 === 0) return sum + currNum;
+
+    const newVal = currNum * 2 > 9 ? currNum * 2 - 9 : currNum * 2;
+    return sum + newVal;
+  }, 0);
+
+  return (res % 10 === 0);
 }
 
 /**
@@ -415,6 +426,20 @@ function getCommonDirectoryPath(/* pathes */) {
  */
 function getMatrixProduct(/* m1, m2 */) {
   throw new Error('Not implemented');
+  // const inverted = (matrix) => matrix[0].map((__, i) => matrix.map((row) => row[i]));
+  // const inverted = (matrix) => {
+  //   const numRows = matrix.length;
+  //   const numColumns = matrix[0].length;
+  //   const newMatrix = [...matrix];
+  //   for (let i = 0; i < numRows; i += 1) {
+  //     for (let j = 0; j < numColumns; j += 1) {
+  //       newMatrix[i][j] = matrix[j][i]
+  //     }
+  //   }
+  // };
+  // const invertedM2 = inverted(m2);
+
+  // return m1.map((col, i) => col.reduce((sum, element, j) => sum + element * invertedM2[i][j]));
 }
 
 
